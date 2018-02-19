@@ -3,46 +3,14 @@ package main
 import (
 	"github.com/yuin/gopher-lua"
 	"strconv"
-	"time"
 	"golang.org/x/image/colornames"
 	"fmt"
-	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/imdraw"
 )
 
-func run() {
+func mainLoop() {
 
-	cfg := pixelgl.WindowConfig{
-		Title:  "Go Pixel & Lua Test",
-		Bounds: pixel.R(0, 0, screenWidth, screenHeight),
-		VSync:  true,
-	}
-	win, err := pixelgl.NewWindow(cfg)
-	if err != nil {
-		panic(err)
-	}
-
-	var (
-		frames = 0
-		second = time.Tick(time.Second)
-	)
-
-	spriteImage, err := loadImageFile("sonic.png")
-	if err != nil {
-		panic(err)
-	}
-
-	spritePic := pixel.PictureDataFromImage(spriteImage)
-
-	sprite := pixel.NewSprite(spritePic, spritePic.Bounds())
-
-	spriteBatch := pixel.NewBatch(&pixel.TrianglesData{}, spritePic)
-	overlay := imdraw.New(nil)
-
-	executeLua(L,
-		`angle = 0
-				function getAngle() return angle end`)
+	initiate()
 
 	for !win.Closed() {
 
@@ -75,9 +43,10 @@ func run() {
 		frames++
 		select {
 		case <-second:
-			win.SetTitle(fmt.Sprintf("%s | FPS: %d", cfg.Title, frames))
+			win.SetTitle(fmt.Sprintf("%s | FPS: %d", windowTitlePrefix, frames))
 			frames = 0
 		default:
 		}
+
 	}
 }

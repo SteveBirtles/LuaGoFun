@@ -21,6 +21,6 @@ func main() {
 	linkToLua(L, left, "left")
 	linkToLua(L, right, "right")
 
-	pixelgl.Run(run)
+	pixelgl.Run(mainLoop)
 
 }
